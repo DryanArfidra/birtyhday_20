@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --color-midnight: #10182B;
+  --color-deepblue: #18243D;
+  --color-burgundy: #813C4B;
+  --color-cream: #F5EBDD;
+  --color-gold: #C6AD83;
+  --color-lavender: #AEB8CE;
+
+  --font-serif: "Cormorant Garamond", "Playfair Display", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    background-color: var(--color-midnight);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Star twinkle */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.85; }
+}
+.star {
+  position: absolute;
+  background: #F5EBDD;
+  border-radius: 9999px;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+/* Floating envelope */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.floaty { animation: floaty 4s ease-in-out infinite; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
