@@ -8,7 +8,7 @@ export default function MusicPlayer({ shouldPlay }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const audio = new Audio("public/audio/musik1.mp3");
+    const audio = new Audio("/audio/musik1.mp3");
     audio.loop = true;
     audio.volume = 0.5;
     audioRef.current = audio;
