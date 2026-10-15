@@ -29,62 +29,53 @@ export const config = {
     title: "Little Pieces of Us",
     subtitle: "Every little moment with you means something to me.",
     photos: [
-      { id: "1", src: "/public/images/images1.jpg", caption: "First time kita jalan berdua", date: "12 Februari 2023" },
-      { id: "2", src: "/images/memory-02.jpg", caption: "Sore yang nggak mau aku lupakan", date: "20 Maret 2023" },
-      { id: "3", src: "/images/memory-03.jpg", caption: "Kopi dan obrolan panjang", date: "05 Mei 2023" },
-      { id: "4", src: "/images/memory-04.jpg", caption: "Ketawa sampai lupa waktu", date: "18 Juni 2023" },
-      { id: "5", src: "/images/memory-05.jpg", caption: "Sederhana, tapi berarti", date: "02 Agustus 2023" },
-      { id: "6", src: "/images/memory-06.jpg", caption: "Dan masih banyak lagi nanti", date: "—" },
+      { id: "1", src: "/images/image1.jpg", caption: "First time kita jalan berdua", date: "12 Februari 2023" },
+      { id: "2", src: "/images/image2.jpg", caption: "Sore yang nggak mau aku lupakan", date: "20 Maret 2023" },
+      { id: "3", src: "/images/image3.jpg", caption: "Kopi dan obrolan panjang", date: "05 Mei 2023" },
+      { id: "4", src: "/images/image4.jpg", caption: "Ketawa sampai lupa waktu", date: "18 Juni 2023" },
+      { id: "5", src: "/images/image5.jpg", caption: "Sederhana, tapi berarti", date: "02 Agustus 2023" },
+      { id: "6", src: "/images/image6.jpg", caption: "Dan masih banyak lagi nanti", date: "—" },
     ] as MemoryPhoto[],
   },
-  
+  video: {
+  title: "A Moment in Motion",
+  subtitle: "Karena kadang satu video lebih jujur dari seribu kata.",
+  src: "/videos/memory-video.mp4",
+  poster: "/images/memory-01.jpg",
+  caption: "Salah satu momen favoritku bersama kamu 💫",
+},
+
+story: {
+  title: "Our Story, In My Words",
+  subtitle: "Cerita yang aku simpan diam-diam, sekarang aku bagikan ke kamu.",
+  paragraphs: [
+    "Ada banyak hal yang ingin aku ceritakan ke kamu...",
+    // dst
+  ],
+  signature: "— dari aku, untuk kamu.",
+},
+
 
 questions: [
   {
     id: 1,
     question: "Kamu sayang aku nggak? ❤️",
-    options: [
-      "Sayang ❤️",
-      "Tidak 💔",
-    ],
+    options: ["Sayang ❤️", "Tidak 💔"],
     correctIndex: 0,
-    wrongMessage: "Yah, kok pilih tidak? 😭 Coba lagi ya, sayang!",
+    wrongMessage:
+      "Yah, kok pilih tidak? 😭 Coba lagi ya, sayang!",
   },
   {
     id: 2,
     question: "Beneran sayang banget sama aku? 🥺❤️",
-    options: [
-      "Sayang banget! ❤️",
-      "Biasa saja 😝",
-    ],
+    options: ["Sayang banget! ❤️", "Biasa saja 😝"],
     correctIndex: 0,
-    wrongMessage: "Lho, kok biasa aja? Aku maunya disayang banget 🤭❤️",
+    wrongMessage:
+      "Lho, kok biasa aja? Aku maunya disayang banget 🤭❤️",
   },
-  {
-    id: 3,
-    question: "Siapa yang ulang tahun ke-20 tanggal 25 Oktober? 🎂",
-    options: [
-      "Aryan, tanggal 25 Maret 🎁",
-      "Nayla, tanggal 25 Oktober 💗",
-      "Nayla, tanggal 25 Maret 🌷",
-      "Aryan, tanggal 25 Oktober 🎉",
-    ],
-    correctIndex: 1,
-    wrongMessage: "Coba ingat lagi, siapa yang ulang tahun ke-20? 🥹💕",
-  },
-  {
-    id: 4,
-    question: "Kalau kamu sayang aku, pasti tahu dong tanggal ulang tahunku? 🤭❤️",
-    options: [
-      "3 Maret 🎂",
-      "25 Maret ❤️",
-      "14 November 🎁",
-      "30 April 💕",
-    ],
-    correctIndex: 1,
-    wrongMessage: "Masa tanggal ulang tahun aku lupa, Nayla? 😭❤️",
-  },
+  
 ] as Question[],
+
   closing: {
     title: "Until Our Next Chapter",
     paragraphs: [

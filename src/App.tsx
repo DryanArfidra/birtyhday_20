@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StarField from "./components/StarField";
 import Envelope from "./components/Envelope";
+import PinLock from "./components/PinLock";
 import Letter from "./components/Letter";
 import PhotoAlbum from "./components/PhotoAlbum";
 import GiftQuestions from "./components/GiftQuestions";
@@ -9,7 +10,15 @@ import DanaGift from "./components/DanaGift";
 import Closing from "./components/Closing";
 import MusicPlayer from "./components/MusicPlayer";
 
-type Stage = "envelope" | "letter" | "album" | "questions" | "gift" | "closing";
+type Stage =
+  | "envelope"
+  | "pin"
+  | "letter"
+  | "album"
+  | "video"      // ← video + story digabung di sini
+  | "questions"
+  | "gift"
+  | "closing";
 
 export default function App() {
   const [stage, setStage] = useState<Stage>("envelope");
@@ -17,7 +26,7 @@ export default function App() {
 
   const handleOpenEnvelope = () => {
     setMusicOn(true);
-    setStage("letter");
+    setStage("pin");
   };
 
   return (
@@ -34,9 +43,12 @@ export default function App() {
           transition={{ duration: 0.55, ease: "easeOut" }}
         >
           {stage === "envelope" && <Envelope onOpen={handleOpenEnvelope} />}
+          {stage === "pin" && <PinLock onUnlock={() => setStage("letter")} />}
           {stage === "letter" && <Letter onContinue={() => setStage("album")} />}
-          {stage === "album" && <PhotoAlbum onContinue={() => setStage("questions")} />}
-          {stage === "questions" && <GiftQuestions onAllCorrect={() => setStage("gift")} />}
+          {stage === "album" && <PhotoAlbum onContinue={() => setStage("video")} />}
+          {stage === "questions" && (
+            <GiftQuestions onAllCorrect={() => setStage("gift")} />
+          )}
           {stage === "gift" && <DanaGift onContinue={() => setStage("closing")} />}
           {stage === "closing" && <Closing onRestart={() => setStage("letter")} />}
         </motion.div>
