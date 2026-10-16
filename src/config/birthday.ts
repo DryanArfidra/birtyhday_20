@@ -37,24 +37,7 @@ export const config = {
       { id: "6", src: "/images/image6.jpg", caption: "Dan masih banyak lagi nanti", date: "—" },
     ] as MemoryPhoto[],
   },
-  video: {
-  title: "A Moment in Motion",
-  subtitle: "Karena kadang satu video lebih jujur dari seribu kata.",
-  src: "/videos/memory-video.mp4",
-  poster: "/images/memory-01.jpg",
-  caption: "Salah satu momen favoritku bersama kamu 💫",
-},
-
-story: {
-  title: "Our Story, In My Words",
-  subtitle: "Cerita yang aku simpan diam-diam, sekarang aku bagikan ke kamu.",
-  paragraphs: [
-    "Ada banyak hal yang ingin aku ceritakan ke kamu...",
-    // dst
-  ],
-  signature: "— dari aku, untuk kamu.",
-},
-
+  
 
 questions: [
   {
@@ -73,9 +56,19 @@ questions: [
     wrongMessage:
       "Lho, kok biasa aja? Aku maunya disayang banget 🤭❤️",
   },
-  
+  {
+    id: 3,
+    question: "Kapan tanggal ulang tahun Nayla? 🎂❤️",
+    options: [
+      "ISI TANGGAL ULANG TAHUN NAYLA",
+      "Pilihan tanggal kedua",
+      "Pilihan tanggal ketiga",
+    ],
+    correctIndex: 0,
+    wrongMessage:
+      "Masa lupa tanggal spesial kamu sendiri? 🤭❤️",
+  },
 ] as Question[],
-
   closing: {
     title: "Until Our Next Chapter",
     paragraphs: [

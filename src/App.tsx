@@ -15,7 +15,6 @@ type Stage =
   | "pin"
   | "letter"
   | "album"
-  | "video"      // ← video + story digabung di sini
   | "questions"
   | "gift"
   | "closing";
@@ -42,15 +41,35 @@ export default function App() {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
         >
-          {stage === "envelope" && <Envelope onOpen={handleOpenEnvelope} />}
-          {stage === "pin" && <PinLock onUnlock={() => setStage("letter")} />}
-          {stage === "letter" && <Letter onContinue={() => setStage("album")} />}
-          {stage === "album" && <PhotoAlbum onContinue={() => setStage("video")} />}
-          {stage === "questions" && (
-            <GiftQuestions onAllCorrect={() => setStage("gift")} />
+          {stage === "envelope" && (
+            <Envelope onOpen={handleOpenEnvelope} />
           )}
-          {stage === "gift" && <DanaGift onContinue={() => setStage("closing")} />}
-          {stage === "closing" && <Closing onRestart={() => setStage("letter")} />}
+
+          {stage === "pin" && (
+            <PinLock onUnlock={() => setStage("letter")} />
+          )}
+
+          {stage === "letter" && (
+            <Letter onContinue={() => setStage("album")} />
+          )}
+
+          {stage === "album" && (
+            <PhotoAlbum onContinue={() => setStage("questions")} />
+          )}
+
+          {stage === "questions" && (
+            <GiftQuestions
+              onAllCorrect={() => setStage("gift")}
+            />
+          )}
+
+          {stage === "gift" && (
+            <DanaGift onContinue={() => setStage("closing")} />
+          )}
+
+          {stage === "closing" && (
+            <Closing onRestart={() => setStage("letter")} />
+          )}
         </motion.div>
       </AnimatePresence>
     </main>

@@ -1,10 +1,24 @@
+
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, Gift, Heart, RotateCcw, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Gift,
+  Heart,
+  RotateCcw,
+  Sparkles,
+} from "lucide-react";
 import { config } from "../config/birthday";
 
-type Props = { onAllCorrect: () => void };
-type MemoryCard = { id: number; symbol: string; pair: string };
+type Props = {
+  onAllCorrect: () => void;
+};
+
+type MemoryCard = {
+  id: number;
+  symbol: string;
+  pair: string;
+};
 
 const memorySymbols = [
   { symbol: "❤️", pair: "heart" },
@@ -15,8 +29,16 @@ const memorySymbols = [
 
 function createMemoryDeck(): MemoryCard[] {
   const cards = memorySymbols.flatMap((item, index) => [
-    { id: index * 2, symbol: item.symbol, pair: item.pair },
-    { id: index * 2 + 1, symbol: item.symbol, pair: item.pair },
+    {
+      id: index * 2,
+      symbol: item.symbol,
+      pair: item.pair,
+    },
+    {
+      id: index * 2 + 1,
+      symbol: item.symbol,
+      pair: item.pair,
+    },
   ]);
 
   for (let i = cards.length - 1; i > 0; i--) {
@@ -31,17 +53,27 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
   const [showMemory, setShowMemory] = useState(false);
-  const [memoryCards, setMemoryCards] = useState<MemoryCard[]>(createMemoryDeck);
+
+  const [memoryCards, setMemoryCards] =
+    useState<MemoryCard[]>(createMemoryDeck);
+
   const [revealed, setRevealed] = useState<number[]>([]);
   const [matched, setMatched] = useState<number[]>([]);
   const [memoryLocked, setMemoryLocked] = useState(false);
-  const [feedback, setFeedback] = useState<{ type: "wrong"; msg: string } | null>(null);
+
+  const [feedback, setFeedback] = useState<{
+    type: "wrong";
+    msg: string;
+  } | null>(null);
+
   const [locked, setLocked] = useState(false);
   const [moves, setMoves] = useState(0);
 
   const total = config.questions.length;
   const q = config.questions[index];
-  const progress = ((index + 1) / total) * 100;
+
+  const progress =
+    total > 0 ? ((index + 1) / total) * 100 : 0;
 
   const handleAnswer = (optIdx: number) => {
     if (locked || !q) return;
@@ -53,17 +85,21 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
       window.setTimeout(() => {
         setLocked(false);
 
-        // Setelah dua pertanyaan romantis, masuk ke game Memory Match.
+        // Setelah dua pertanyaan pertama,
+        // tampilkan permainan Memory Match.
         if (index === 1) {
           setShowMemory(true);
           return;
         }
 
+        // Jika semua pertanyaan selesai,
+        // lanjut ke halaman hadiah.
         if (index + 1 >= total) {
           onAllCorrect();
-        } else {
-          setIndex((prev) => prev + 1);
+          return;
         }
+
+        setIndex((prev) => prev + 1);
       }, 650);
     } else {
       setFeedback({
@@ -84,6 +120,7 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
     }
 
     const nextRevealed = [...revealed, cardIndex];
+
     setRevealed(nextRevealed);
 
     if (nextRevealed.length !== 2) return;
@@ -96,16 +133,21 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
 
     if (firstCard.pair === secondCard.pair) {
       const nextMatched = [...matched, ...nextRevealed];
+
       setMatched(nextMatched);
 
       window.setTimeout(() => {
         setRevealed([]);
         setMemoryLocked(false);
 
+        // Semua pasangan ditemukan.
         if (nextMatched.length === memoryCards.length) {
           window.setTimeout(() => {
             setShowMemory(false);
+
+            // Pertanyaan ketiga: tanggal ulang tahun.
             setIndex(2);
+
             setFeedback(null);
           }, 550);
         }
@@ -126,6 +168,7 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
     setMoves(0);
   };
 
+  // Halaman pembuka permainan.
   if (!started) {
     return (
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center overflow-hidden px-6 py-12 text-center">
@@ -137,7 +180,9 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
         >
           <div className="mb-5 flex items-center justify-center gap-2 text-gold">
             <Sparkles size={15} />
-            <span className="text-[10px] uppercase tracking-[0.4em]">Made with love</span>
+            <span className="text-[10px] uppercase tracking-[0.4em]">
+              Made with love
+            </span>
             <Sparkles size={15} />
           </div>
 
@@ -148,23 +193,41 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
           </h2>
 
           <p className="mx-auto mt-4 max-w-[270px] text-sm leading-7 text-lavender/80">
-            Sebelum membuka hadiahmu, yuk jawab pertanyaan kecil dan temukan pasangan kartu yang tersembunyi.
+            Sebelum membuka hadiahmu, yuk jawab pertanyaan
+            kecil dan temukan pasangan kartu yang tersembunyi.
           </p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
+          transition={{
+            delay: 0.2,
+            duration: 0.8,
+            type: "spring",
+          }}
           className="relative my-3"
         >
           <div className="absolute -inset-5 rounded-full bg-gold/10 blur-2xl" />
+
           <div className="relative flex h-48 w-48 items-center justify-center rounded-[2rem] border border-gold/40 bg-gradient-to-br from-burgundy via-[#54233e] to-midnight shadow-2xl shadow-black/30">
             <div className="absolute inset-3 rounded-[1.5rem] border border-gold/20" />
+
             <div className="absolute left-1/2 top-0 h-full w-7 -translate-x-1/2 bg-gold/20" />
+
             <div className="absolute left-0 top-1/2 h-7 w-full -translate-y-1/2 bg-gold/20" />
-            <Gift size={62} strokeWidth={1.1} className="relative z-10 text-gold" />
-            <Heart size={17} fill="currentColor" className="absolute bottom-5 right-5 text-gold" />
+
+            <Gift
+              size={62}
+              strokeWidth={1.1}
+              className="relative z-10 text-gold"
+            />
+
+            <Heart
+              size={17}
+              fill="currentColor"
+              className="absolute bottom-5 right-5 text-gold"
+            />
           </div>
         </motion.div>
 
@@ -190,36 +253,53 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
           <ArrowRight size={17} />
         </motion.button>
 
-        <p className="mt-5 text-[10px] tracking-[0.2em] text-lavender/50">A LITTLE GAME JUST FOR YOU</p>
+        <p className="mt-5 text-[10px] tracking-[0.2em] text-lavender/50">
+          A LITTLE GAME JUST FOR YOU
+        </p>
       </div>
     );
   }
 
+  // Halaman permainan Memory Match.
   if (showMemory) {
     const pairsFound = matched.length / 2;
 
     return (
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-10">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
           <div className="mb-3 flex items-center gap-2 text-gold">
             <Heart size={15} fill="currentColor" />
-            <span className="text-[10px] uppercase tracking-[0.3em]">Our little memory game</span>
+            <span className="text-[10px] uppercase tracking-[0.3em]">
+              Our little memory game
+            </span>
           </div>
 
-          <h2 className="font-serif text-3xl leading-tight text-cream">Find the matching hearts</h2>
+          <h2 className="font-serif text-3xl leading-tight text-cream">
+            Find the matching hearts
+          </h2>
+
           <p className="mt-2 text-sm leading-6 text-lavender/70">
-            Buka dua kartu setiap giliran dan temukan empat pasangan yang sama, ya sayang. ❤️
+            Buka dua kartu setiap giliran dan temukan empat
+            pasangan yang sama, ya sayang. ❤️
           </p>
 
           <div className="mt-5 flex items-center justify-between rounded-xl border border-gold/20 bg-white/[0.035] px-4 py-3 text-xs text-lavender">
             <span>Pasangan ditemukan</span>
-            <span className="font-semibold text-gold">{pairsFound} / {memorySymbols.length}</span>
+            <span className="font-semibold text-gold">
+              {pairsFound} / {memorySymbols.length}
+            </span>
             <span>Langkah: {moves}</span>
           </div>
 
           <div className="mt-5 grid grid-cols-4 gap-3">
             {memoryCards.map((card, cardIndex) => {
-              const isFaceUp = revealed.includes(cardIndex) || matched.includes(cardIndex);
+              const isFaceUp =
+                revealed.includes(cardIndex) ||
+                matched.includes(cardIndex);
+
               const isMatched = matched.includes(cardIndex);
 
               return (
@@ -227,11 +307,22 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
                   key={card.id}
                   type="button"
                   whileTap={{ scale: 0.94 }}
-                  animate={{ rotateY: isFaceUp ? 0 : 0, scale: isMatched ? 0.96 : 1 }}
+                  animate={{
+                    rotateY: 0,
+                    scale: isMatched ? 0.96 : 1,
+                  }}
                   transition={{ duration: 0.2 }}
                   onClick={() => handleMemoryCard(cardIndex)}
-                  disabled={memoryLocked || isMatched || revealed.includes(cardIndex)}
-                  aria-label={isFaceUp ? `Kartu ${card.symbol}` : "Buka kartu"}
+                  disabled={
+                    memoryLocked ||
+                    isMatched ||
+                    revealed.includes(cardIndex)
+                  }
+                  aria-label={
+                    isFaceUp
+                      ? `Kartu ${card.symbol}`
+                      : "Buka kartu"
+                  }
                   className={`flex aspect-[0.82] items-center justify-center rounded-2xl border text-3xl shadow-lg transition-colors duration-200 ${
                     isMatched
                       ? "border-gold/70 bg-gold/15"
@@ -240,7 +331,15 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
                         : "border-lavender/20 bg-gradient-to-br from-[#30243f] to-[#202039] hover:border-gold/50"
                   }`}
                 >
-                  {isFaceUp ? card.symbol : <Heart size={25} strokeWidth={1.4} className="text-gold/80" />}
+                  {isFaceUp ? (
+                    card.symbol
+                  ) : (
+                    <Heart
+                      size={25}
+                      strokeWidth={1.4}
+                      className="text-gold/80"
+                    />
+                  )}
                 </motion.button>
               );
             })}
@@ -254,21 +353,34 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
                 exit={{ opacity: 0 }}
                 className="mt-5 rounded-2xl border border-gold/30 bg-gold/[0.08] p-4 text-center"
               >
-                <Sparkles className="mx-auto mb-2 text-gold" size={24} />
-                <p className="font-serif text-xl text-cream">Kamu hebat, sayang! ❤️</p>
-                <p className="mt-1 text-xs leading-5 text-lavender/75">Semua pasangan berhasil ditemukan.</p>
+                <Sparkles
+                  className="mx-auto mb-2 text-gold"
+                  size={24}
+                />
+
+                <p className="font-serif text-xl text-cream">
+                  Kamu hebat, sayang! ❤️
+                </p>
+
+                <p className="mt-1 text-xs leading-5 text-lavender/75">
+                  Semua pasangan berhasil ditemukan.
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
 
           <div className="mt-5 flex items-center justify-between gap-3">
-            <p className="text-xs leading-5 text-lavender/50">Ingat posisi kartunya, ya 🤭</p>
+            <p className="text-xs leading-5 text-lavender/50">
+              Ingat posisi kartunya, ya 🤭
+            </p>
+
             <button
               type="button"
               onClick={restartMemory}
               className="inline-flex shrink-0 items-center gap-2 rounded-full border border-lavender/20 px-3 py-2 text-xs text-lavender transition hover:border-gold/50 hover:text-gold"
             >
-              <RotateCcw size={13} /> Acak ulang
+              <RotateCcw size={13} />
+              Acak ulang
             </button>
           </div>
         </motion.div>
@@ -276,16 +388,45 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
     );
   }
 
+  // Pengaman jika konfigurasi pertanyaan belum lengkap.
+  if (!q) {
+    return (
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-6 text-center">
+        <div>
+          <Heart
+            size={32}
+            className="mx-auto mb-4 text-gold"
+          />
+          <p className="text-cream">
+            Pertanyaan belum tersedia.
+          </p>
+          <p className="mt-2 text-sm text-lavender/70">
+            Periksa kembali bagian questions di birthday.ts.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Halaman pertanyaan.
   return (
     <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-6 py-12">
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2 text-gold">
             <Heart size={15} fill="currentColor" />
-            <span className="text-[10px] uppercase tracking-[0.3em]">Our little story</span>
+            <span className="text-[10px] uppercase tracking-[0.3em]">
+              Our little story
+            </span>
           </div>
+
           <span className="text-xs tracking-widest text-lavender">
-            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            {String(index + 1).padStart(2, "0")} /{" "}
+            {String(total).padStart(2, "0")}
           </span>
         </div>
 
@@ -311,16 +452,29 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
 
             <div className="relative">
               <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/30 bg-burgundy/30 text-gold">
-                {index >= 2 ? <Gift size={23} strokeWidth={1.4} /> : <Heart size={23} strokeWidth={1.4} />}
+                {index >= 2 ? (
+                  <Gift size={23} strokeWidth={1.4} />
+                ) : (
+                  <Heart size={23} strokeWidth={1.4} />
+                )}
               </div>
 
-              <p className="mb-3 text-[10px] uppercase tracking-[0.3em] text-gold/80">Question {index + 1}</p>
-              <h3 className="font-serif text-2xl leading-relaxed text-cream">{q.question}</h3>
-              <p className="mt-2 text-xs leading-6 text-lavender/60">Pilih jawaban yang menurutmu benar, ya ❤️</p>
+              <p className="mb-3 text-[10px] uppercase tracking-[0.3em] text-gold/80">
+                Question {index + 1}
+              </p>
+
+              <h3 className="font-serif text-2xl leading-relaxed text-cream">
+                {q.question}
+              </h3>
+
+              <p className="mt-2 text-xs leading-6 text-lavender/60">
+                Pilih jawaban yang menurutmu benar, ya ❤️
+              </p>
 
               <div className="mt-7 space-y-3">
                 {q.options.map((opt, i) => {
                   const letter = String.fromCharCode(65 + i);
+
                   return (
                     <motion.button
                       key={i}
@@ -332,8 +486,14 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold/25 bg-burgundy/30 text-xs font-semibold text-gold transition-colors group-hover:bg-gold group-hover:text-midnight">
                         {letter}
                       </span>
-                      <span className="flex-1 leading-6">{opt}</span>
-                      <span className="text-gold/0 transition-colors group-hover:text-gold"><ArrowRight size={16} /></span>
+
+                      <span className="flex-1 leading-6">
+                        {opt}
+                      </span>
+
+                      <span className="text-gold/0 transition-colors group-hover:text-gold">
+                        <ArrowRight size={16} />
+                      </span>
                     </motion.button>
                   );
                 })}
@@ -342,13 +502,28 @@ export default function GiftQuestions({ onAllCorrect }: Props) {
               <AnimatePresence>
                 {feedback && (
                   <motion.div
-                    initial={{ opacity: 0, y: 8, height: 0 }}
-                    animate={{ opacity: 1, y: 0, height: "auto" }}
-                    exit={{ opacity: 0, y: -5, height: 0 }}
+                    initial={{
+                      opacity: 0,
+                      y: 8,
+                      height: 0,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      height: "auto",
+                    }}
+                    exit={{
+                      opacity: 0,
+                      y: -5,
+                      height: 0,
+                    }}
                     className="mt-5 overflow-hidden"
                   >
                     <div className="flex items-start gap-3 rounded-xl border border-burgundy/60 bg-burgundy/20 px-4 py-3 text-sm leading-6 text-cream">
-                      <Heart size={17} className="mt-1 shrink-0 text-gold" />
+                      <Heart
+                        size={17}
+                        className="mt-1 shrink-0 text-gold"
+                      />
                       <p>{feedback.msg}</p>
                     </div>
                   </motion.div>
